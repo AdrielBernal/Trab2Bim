@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ContatoService } from './contato.service';
 import { Contato } from './contato';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 
 @Component({
   selector: 'app-contato',
@@ -10,16 +12,32 @@ import { Contato } from './contato';
 export class ContatoComponent implements OnInit {
   public contatos: Contato[] = [];
   public nome = '';
+  public telefone = '';
+  public celular = '';
+  public endereco = '';
+  public email = '';
 
-  constructor(private contatoService: ContatoService) { }
+  constructor(private contatoService: ContatoService, private modalService: BsModalService) { }
+
+  public modalRef: BsModalRef;
+
+
+  public openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
   ngOnInit() {
+    this.carregaTodos();
   }
   public salvarContato(): void {
     console.log('oi');
 
     const contato = new Contato();
     contato.nome = this.nome;
+    contato.telefone = this.telefone;
+    contato.celular = this.celular;
+    contato.endereco = this.endereco;
+    contato.email = this.email;
 
     this.contatoService.addContato(contato)
       .subscribe(res => {
@@ -32,7 +50,7 @@ export class ContatoComponent implements OnInit {
 
   }
 
-  public apagarAluno(id: number): void {
+  public apagarContato(id: number): void {
     this.contatoService.removeContato(id)
       .subscribe(res => {
         console.log(res);

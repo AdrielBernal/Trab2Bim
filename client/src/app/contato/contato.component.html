@@ -1,31 +1,124 @@
-<!-- <h1>Adicionar</h1>
-Nome
-<input [(ngModel)]="nome">
+<style>
+  .row.content {height: 93vh}
+  .sidenav {
+    background-color: #f1f1f1;
+    height: 100%;
+  }
+  @media screen and (max-width: 500px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height: auto;}
+  }
+</style>
+<ng-template #tempCad>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cadastrar</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+<fieldset>
 
-<p>Adicionando {{nome}}!</p>
-
-<button (click)="salvarContato()">Salvar</button>
 
 
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="nome">Nome</label>
+  <div class="col-md-4">
+  <input  [(ngModel)]="nome" id="nome" name="nome" type="text" placeholder="" class="form-control input-md" required="">
 
-<h1>Lista</h1>
+  </div>
+</div>
 
-<table>
-  <tr *ngFor="let contato of contatos">
-    <td>
-      {{contato.id}}
-    </td>
-    <td>
-      {{contato.nome}}
-    </td>
-    <td>
-      <button (click)="apagarContato(contato.id)">Apagar</button>
-    </td>
-  </tr>
-</table>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="telefone">Telefone</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="telefone" id="telefone" name="telefone" type="text" placeholder="" class="form-control input-md">
 
+  </div>
+</div>
 
-<h1>Json</h1>
-<pre>
-  {{contatos | json}}
-</pre> -->
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="celular">Celular</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="celular" id="celular" name="celular" type="text" placeholder="" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="endereco">Endereço</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="endereco" id="endereco" name="endereco" type="text" placeholder="" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="email">E-mail</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="email" id="email" name="email" type="text" placeholder="" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="button"></label>
+  <div class="col-md-4">
+    <button id="button" name="button" class="btn btn-success" (click)="modalRef.hide()" (click)="salvarContato()">Gravar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+  </div>
+</ng-template>
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <h4>Menu</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li><button type="button" class="btn btn-link" (click)="openModal(tempCad)">Cadastrar</button></li>
+      </ul><br>
+    </div>
+    <div class="col-sm-10">
+      <table>
+        <tr>
+          <!-- <th>ID</th>
+          <th>Nome</th>
+          <th>Age</th> -->
+        </tr>
+        <tr *ngFor="let contato of contatos">
+          <td>
+            {{contato.nome}}
+          </td>
+          <td>
+            {{contato.telefone}}
+          </td>
+          <td>
+            {{contato.celular}}
+          </td>
+          <td>
+            {{contato.endereco}}
+          </td>
+          <td>
+            {{contato.email}}
+          </td>
+          <td>
+            <button (click)="apagarContato(contato.id)">Apagar</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -41,6 +41,7 @@ public class ContatoController {
 
 	@PostMapping("/contatos")
 	public Contato createContato(@Valid @RequestBody Contato c) {
+		System.out.println("rafael viado");
 		return contatoRepository.save(c);
 	}
 
