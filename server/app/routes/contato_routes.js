@@ -1,17 +1,21 @@
 module.exports = function(app, pool) {
 
-  app.post('/api/alunos', (req, res) => {
+  app.post('/api/contatos', (req, res) => {
 
     pool.connect((err, client, release) => {
 
       const nome = req.body.nome;
+      const telefone = req.body.telefone;
+      const celular = req.body.celular;
+      const endereco = req.body.endereco;
+      const email = req.body.email;
 
       if (err) {
         res.status(500);
         return console.error('Erro na conexão.', err.stack);
       }
 
-      client.query("INSERT INTO aluno(nome) VALUES ($1)", [nome], (err, item) => {
+      client.query("INSERT INTO contato(nome,telefone,celular,endereco,email) VALUES ($1,$2,$3,$4,$5)", [nome,telefone,celular,endereco,email], (err, item) => {
 
         release();
 
@@ -30,7 +34,7 @@ module.exports = function(app, pool) {
   });
 
 
-  app.get('/api/alunos', (req, res) => {
+  app.get('/api/contatos', (req, res) => {
 
     const id = req.params.id;
 
@@ -43,7 +47,7 @@ module.exports = function(app, pool) {
         return console.error('Erro na conexão.', err.stack);
       }
 
-      client.query("SELECT * FROM aluno", [], (err, item) => {
+      client.query("SELECT * FROM contato", [], (err, item) => {
 
         release();
 
@@ -64,7 +68,7 @@ module.exports = function(app, pool) {
   });
 
 
-  app.get('/api/alunos/:id', (req, res) => {
+  app.get('/api/contatos/:id', (req, res) => {
 
     const id = req.params.id;
 
@@ -77,7 +81,7 @@ module.exports = function(app, pool) {
         return console.error('Erro na conexão.', err.stack);
       }
 
-      client.query("SELECT * FROM aluno WHERE id = $1", [id], (err, item) => {
+      client.query("SELECT * FROM contato WHERE id = $1", [id], (err, item) => {
 
         release();
 
@@ -97,11 +101,73 @@ module.exports = function(app, pool) {
 
   });
 
-  app.delete('/api/alunos/:id', (req, res) => {
+  app.delete('/api/contatos/:id', (req, res) => {
+
+    const id = req.params.id;
+
+    pool.connect((err, client, release) => {
+
+      const nome = req.body.nome;
+
+      if (err) {
+        res.status(500);
+        return console.error('Erro na conexão.', err.stack);
+      }
+
+      client.query("DELETE FROM contato WHERE id = $1", [id], (err, item) => {
+
+        release();
+
+        if (err) {
+          res.status(500).json(err);
+          return console.error('Erro executanto a consulta', err.stack);
+
+        } else {
+          res.status(200).json(item.rows);
+          return console.log(item.rowCount + ' registros retornados.');
+
+        }
+
+      });
+
+    });
 
   });
 
-  app.put('/api/alunos/:id', (req, res) => {
+  app.put('/api/contatos/:id', (req, res) => {
+    const id = req.params.id;
+
+    pool.connect((err, client, release) => {
+
+      const nome = req.body.nome;
+      const telefone = req.body.telefone;
+      const celular = req.body.celular;
+      const endereco = req.body.endereco;
+      const email = req.body.email;
+
+
+      if (err) {
+        res.status(500);
+        return console.error('Erro na conexão.', err.stack);
+      }
+
+      client.query("UPDATE contato SET nome=$2 , telefone=$3 , celular=$4 , endereco=$5 , email=$6 WHERE id = $1", [id,nome,telefone,celular,endereco,email], (err, item) => {
+
+        release();
+
+        if (err) {
+          res.status(500).json(err);
+          return console.error('Erro executanto a consulta', err.stack);
+
+        } else {
+          res.status(200).json(item.rows);
+          return console.log(item.rowCount + ' registros retornados.');
+
+        }
+
+      });
+
+    });
 
   });
 

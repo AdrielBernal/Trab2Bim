@@ -1,5 +1,5 @@
-const alunoRoutes = require('./contato_routes');
+const contatoRoutes = require('./contato_routes');
 
 module.exports = function(app, pool) {
-  alunoRoutes(app, pool);
+  contatoRoutes(app, pool);
 };
