@@ -29,7 +29,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="nome">Nome</label>
   <div class="col-md-4">
-  <input  [(ngModel)]="nome" id="nome" name="nome" type="text" placeholder="" class="form-control input-md" required="">
+  <input  [(ngModel)]="nome" id="nome" name="nome" type="text" class="form-control input-md" required="">
 
   </div>
 </div>
@@ -38,7 +38,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="telefone">Telefone</label>
   <div class="col-md-4">
-  <input [(ngModel)]="telefone" id="telefone" name="telefone" type="text" placeholder="" class="form-control input-md">
+  <input [(ngModel)]="telefone" id="telefone" name="telefone" type="text" class="form-control input-md">
 
   </div>
 </div>
@@ -47,7 +47,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="celular">Celular</label>
   <div class="col-md-4">
-  <input [(ngModel)]="celular" id="celular" name="celular" type="text" placeholder="" class="form-control input-md">
+  <input [(ngModel)]="celular" id="celular" name="celular" type="text" class="form-control input-md">
 
   </div>
 </div>
@@ -56,7 +56,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="endereco">Endereço</label>
   <div class="col-md-4">
-  <input [(ngModel)]="endereco" id="endereco" name="endereco" type="text" placeholder="" class="form-control input-md">
+  <input [(ngModel)]="endereco" id="endereco" name="endereco" type="text" class="form-control input-md">
 
   </div>
 </div>
@@ -65,7 +65,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="email">E-mail</label>
   <div class="col-md-4">
-  <input [(ngModel)]="email" id="email" name="email" type="text" placeholder="" class="form-control input-md">
+  <input [(ngModel)]="email" id="email" name="email" type="text" class="form-control input-md">
 
   </div>
 </div>
@@ -83,6 +83,77 @@
 
   </div>
 </ng-template>
+<ng-template #tempUp>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Atualizar</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+<fieldset>
+
+
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="nome">Nome</label>
+  <div class="col-md-4">
+  <input  [(ngModel)]="nome" id="nome" name="nome" type="text" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="telefone">Telefone</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="telefone" id="telefone" name="telefone" type="text" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="celular">Celular</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="celular" id="celular" name="celular" type="text" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="endereco">Endereço</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="endereco" id="endereco" name="endereco" type="text" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="email">E-mail</label>
+  <div class="col-md-4">
+  <input [(ngModel)]="email" id="email" name="email" type="text" class="form-control input-md">
+
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="button"></label>
+  <div class="col-md-4">
+    <button id="button" name="button" class="btn btn-success" (click)="modalRef.hide()" (click)="salvarContato()">Atualizar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+  </div>
+</ng-template>
 <div class="container-fluid">
   <div class="row content">
     <div class="col-sm-2 sidenav">
@@ -92,11 +163,20 @@
       </ul><br>
     </div>
     <div class="col-sm-10">
-      <table>
+      <table class="table table-list-search" id="table">
         <tr>
-          <!-- <th>ID</th>
           <th>Nome</th>
-          <th>Age</th> -->
+          <th>Telefone</th>
+          <th>Celular</th>
+          <th>Endereço</th>
+          <th>E-Mail</th>
+          <th><p data-placement="top" data-toggle="tooltip" title="Edit">
+              <span class="glyphicon glyphicon-pencil">
+              </span>
+          </p></th>
+          <th><p data-placement="top" data-toggle="tooltip" title="Delete">
+              <span class="glyphicon glyphicon-trash"></span>
+          </p></th>
         </tr>
         <tr *ngFor="let contato of contatos">
           <td>
@@ -115,8 +195,21 @@
             {{contato.email}}
           </td>
           <td>
-            <button (click)="apagarContato(contato.id)">Apagar</button>
+            <p data-placement="top" data-toggle="tooltip" title="Edit">
+              <button (click)="openModal(tempUp)" (click)="updateContato(contato)" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" >
+                <span class="glyphicon glyphicon-pencil">
+                </span>
+              </button>
+            </p>
           </td>
+          <td>
+            <p data-placement="top" data-toggle="tooltip" title="Delete">
+              <button (click)="apagarContato(contato.id)" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" >
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </p>
+          </td>
+
         </tr>
       </table>
     </div>

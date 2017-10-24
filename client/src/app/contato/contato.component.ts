@@ -10,12 +10,14 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
   styleUrls: ['./contato.component.css']
 })
 export class ContatoComponent implements OnInit {
+  public contatoS: Contato;
   public contatos: Contato[] = [];
   public nome = '';
   public telefone = '';
   public celular = '';
   public endereco = '';
   public email = '';
+  public flag = true;
 
   constructor(private contatoService: ContatoService, private modalService: BsModalService) { }
 
@@ -30,30 +32,53 @@ export class ContatoComponent implements OnInit {
     this.carregaTodos();
   }
   public salvarContato(): void {
-    console.log('oi');
 
-    const contato = new Contato();
-    contato.nome = this.nome;
-    contato.telefone = this.telefone;
-    contato.celular = this.celular;
-    contato.endereco = this.endereco;
-    contato.email = this.email;
-
-    this.contatoService.addContato(contato)
-      .subscribe(res => {
-        console.log(res);
-        this.carregaTodos();
-      },
-      err => {
-        console.log(err);
-      });
+    if(this.flag){
+      const contato = new Contato();
+      contato.nome = this.nome;
+      contato.telefone = this.telefone;
+      contato.celular = this.celular;
+      contato.endereco = this.endereco;
+      contato.email = this.email;
+      this.contatoService.addContato(contato)
+        .subscribe(res => {
+          this.carregaTodos();
+          this.nome = '';
+          this.telefone = '';
+          this.celular = '';
+          this.endereco = '';
+          this.email = '';
+        },
+        err => {
+          console.log(err);
+        });
+    }else {
+      this.contatoS.nome = this.nome;
+      this.contatoS.telefone = this.telefone;
+      this.contatoS.celular = this.celular;
+      this.contatoS.endereco = this.endereco;
+      this.contatoS.email = this.email;
+        this.flag = true;
+          this.contatoService.updateContato(this.contatoS)
+          .subscribe(res => {
+            this.contatos = res;
+            this.nome = '';
+            this.telefone = '';
+            this.celular = '';
+            this.endereco = '';
+            this.email = '';
+            this.carregaTodos();
+          },
+          err => {
+            console.log(err);
+          });
+      }
 
   }
 
   public apagarContato(id: number): void {
     this.contatoService.removeContato(id)
       .subscribe(res => {
-        console.log(res);
         this.carregaTodos();
       },
       err => {
@@ -65,11 +90,19 @@ export class ContatoComponent implements OnInit {
     this.contatoService.loadContatos()
       .subscribe(res => {
         this.contatos = res;
-        console.log('foi');
       },
       err => {
         console.log(err);
       });
+  }
+  public updateContato(contato: Contato): void {
+    this.contatoS = contato;
+    this.nome = contato.nome;
+    this.telefone = contato.telefone;
+    this.celular = contato.celular;
+    this.endereco = contato.endereco;
+    this.email = contato.email;
+    this.flag =false;
   }
 
 }

@@ -22,7 +22,7 @@ export class ContatoService {
       .map((res: Response) => res.json());
   }
 
-  public updateCotnato(body: Object): Observable<Contato[]> {
+  public updateContato(body: Object): Observable<Contato[]> {
 
     const bodyString = JSON.stringify(body);
     const headers = new Headers({ 'Content-Type': 'application/json' });
